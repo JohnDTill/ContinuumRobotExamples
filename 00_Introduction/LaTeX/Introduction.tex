@@ -1,0 +1,42 @@
+\title{Introduction}
+\author{John Till}
+\date{}
+
+\documentclass[12pt]{article}
+
+\usepackage[a4paper, margin=0.75in]{geometry}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\usepackage{graphicx}
+
+\begin{document}
+
+\makeatletter
+\renewcommand{\@maketitle}{
+\newpage
+\null
+\vskip 2em
+\begin{center}
+{\LARGE \@title \par}
+\end{center}
+\par
+} \makeatother
+
+\maketitle
+
+\section{Purpose}
+This repository aims to provide examples for simulating continuum robots- that is robots with flexible links capable of undergoing large-scale deformations. I spent half a decade studying and writing about the theoretical aspects of continuum robots as a member of the \href{https://sites.google.com/site/danielcrucker/}{REACH lab} at the University of Tennessee under Caleb Rucker. Hopefully this repository will be useful to convey some of the more detailed aspects of program implementations which would be inappropriate to include in a paper.
+
+The goal of this project is \emph{not} to create a library of functions for simulating continuum robots. This was originally a goal, but I came to the conclusion that this is infeasible without fundamental software advancements. The differential equations describing a robot tend to be modified with each new problem studied. Software with differential equations specified as part of the runtime would rely greatly on symbolic computation and code generation, which would be an undertaking. Instead we'll consider several examples which the astute programmer can adapt to new problems.
+
+\section{Layout}
+The structure of the repository is created by the folder structure, which separates the examples into sections (statics, dynamics, etc.) then chapters. The later chapters will tend to rely on knowledge from the first chapters. The ``Library'' folder contains header-only files with common C++ functions used throughout the chapters, such as numerical integration and convex optimization functions. The code style is mostly procedural.
+
+\section{Environment}
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{fig/logos.jpg}
+	\label{fig:logos}
+\end{figure}
+\noindent The code examples are mainly provided in C++ with some use of \href{https://www.mathworks.com/}{MATLAB}. We will rely on the library \href{http://eigen.tuxfamily.org/}{Eigen} for matrix calculations within C++ code. A copy of Eigen is included in this repository. The C++ code will often use the \href{https://www.qt.io/}{Qt} framework. The ``.pro'' files are Qt project files, and opening one of these will bring up all the relevant code files in Qt. The \href{https://www.blender.org/}{Blender} modeling program is occasionally used for visualization.
+
+\end{document}
