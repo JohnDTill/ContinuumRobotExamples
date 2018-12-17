@@ -7,4 +7,7 @@
 #include "eigen/Eigen/Dense"
 using namespace Eigen;
 
+//Extra types
+typedef Matrix<double, 6, 1> Vector6d;
+
 #endif // EIGENMATRIXTYPES_H
