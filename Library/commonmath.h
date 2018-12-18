@@ -44,6 +44,63 @@ inline Vector3d linear_rotation_error(Matrix3d R1, Matrix3d R2){
     return inv_hat(R1.transpose()*R2 - R1*R2.transpose());
 }
 
+/*! The matrix representing rotation about the x-axis. */
+inline Matrix3d Rx(double a){
+    Matrix3d Rx;
+
+    #ifdef __GNUC__
+    double c, s;
+    sincos(a,&s,&c);
+    #else
+    double c = cos(a);
+    double s = sin(a);
+    #endif
+
+    Rx << 1, 0,  0,
+          0, c, -s,
+          0, s,  c;
+
+    return Rx;
+}
+
+/*! The matrix representing rotation about the y-axis. */
+inline Matrix3d Ry(double a){
+    Matrix3d Ry;
+
+    #ifdef __GNUC__
+    double c, s;
+    sincos(a,&s,&c);
+    #else
+    double c = cos(a);
+    double s = sin(a);
+    #endif
+
+    Ry <<  c, 0, s,
+           0, 1, 0,
+          -s, 0, c;
+
+    return Ry;
+}
+
+/*! The matrix representing a rotation about the z-axis. */
+inline Matrix3d Rz(double a){
+    Matrix3d Rz;
+
+    #ifdef __GNUC__
+    double c, s;
+    sincos(a,&s,&c);
+    #else
+    double c = cos(a);
+    double s = sin(a);
+    #endif
+
+    Rz << c, -s, 0,
+          s,  c, 0,
+          0,  0, 1;
+
+    return Rz;
+}
+
 }
 
 #endif // COMMONMATH_H
