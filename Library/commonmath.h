@@ -25,6 +25,20 @@ inline Vector3d inv_hat(Matrix3d y_hat){
     return y;
 }
 
+/*! Efficiently calculates m*hat(v). */
+inline Matrix3d hat_postmultiply(Matrix3d m, Vector3d v){
+    return (Matrix3d() << m(0,1)*v(2) - m(0,2)*v(1), m(0,2)*v(0) - m(0,0)*v(2), m(0,0)*v(1) - m(0,1)*v(0),
+                          m(1,1)*v(2) - m(1,2)*v(1), m(1,2)*v(0) - m(1,0)*v(2), m(1,0)*v(1) - m(1,1)*v(0),
+                          m(2,1)*v(2) - m(2,2)*v(1), m(2,2)*v(0) - m(2,0)*v(2), m(2,0)*v(1) - m(2,1)*v(0)).finished();
+}
+
+/*! Efficiently calculates R.transpose()*v. */
+inline Vector3d transposeMultiply(Matrix3d R, Vector3d v){
+    return (Vector3d() << R(0,0)*v(0) + R(1,0)*v(1) + R(2,0)*v(2),
+                          R(0,1)*v(0) + R(1,1)*v(1) + R(2,1)*v(2),
+                          R(0,2)*v(0) + R(1,2)*v(1) + R(2,2)*v(2)).finished();
+}
+
 /*! Calculates the logarithm of a 3x3 matrix */
 inline Matrix3d log(Matrix3d R){
     double theta = acos((R.trace() - 1)/2);

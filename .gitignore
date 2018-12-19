@@ -6,5 +6,6 @@
 *.out
 *.snm
 *.toc
-*.pro.user
+*.tmp
+*.pro.user*
 build*

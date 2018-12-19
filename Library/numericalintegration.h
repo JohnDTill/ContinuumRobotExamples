@@ -73,6 +73,67 @@ inline MatrixXd ode4(VectorXd y0, double L){
     return Y;
 }
 
+//A function pointer typedef for y_s = f(y), where y_s is an output argument
+typedef void(AutonomousOdeOutFunc)(VectorXd&, VectorXd&);
+
+/*! Integrate an autonomous ODE (no explicit dependence on the variable of integration)
+ *  using the classic 4th-order Runge-Kutta algorithm. */
+template<AutonomousOdeOutFunc ODE, int N = 100>
+inline MatrixXd ode4(VectorXd y0, double L){
+    EigenBase<VectorXd>::Index sze = y0.size();
+
+    MatrixXd Y( sze, N );
+    Y.col(0) = y0;
+
+    double ds = L/(N-1);
+    double half_ds = ds/2;
+    double sixth_ds = ds/6;
+
+    //Classic 4th-order Runge-Kutta method
+    VectorXd k0(sze), k1(sze), k2(sze), k3(sze);
+    for(int i = 0; i < N-1; i++){
+        ODE(k0,y0);
+        y0 += k0*half_ds;
+        ODE(k1,y0);
+        y0 = Y.col(i) + k1*half_ds;
+        ODE(k2,y0);
+        y0 = Y.col(i) + k2*ds;
+        ODE(k3,y0);
+
+        y0 = Y.col(i) + (k0 + 2*(k1 + k2) + k3) * sixth_ds;
+        Y.col(i+1) = y0;
+    }
+
+    return Y;
+}
+
+/*! Integrate an autonomous ODE (no explicit dependence on the variable of integration)
+ *  using the classic 4th-order Runge-Kutta algorithm. */
+template<AutonomousOdeOutFunc ODE, int N = 100>
+inline VectorXd ode4_endpoint(VectorXd y0, double L){
+    EigenBase<VectorXd>::Index sze = y0.size();
+
+    double ds = L/(N-1);
+    double half_ds = ds/2;
+    double sixth_ds = ds/6;
+
+    //Classic 4th-order Runge-Kutta method
+    VectorXd k0(sze), k1(sze), k2(sze), k3(sze), y(sze);
+    for(int i = N-1; i > 0; i--){
+        ODE(k0,y0);
+        y = y0 + k0*half_ds;
+        ODE(k1,y);
+        y = y0 + k1*half_ds;
+        ODE(k2,y);
+        y = y0 + k2*ds;
+        ODE(k3,y);
+
+        y0 += (k0 + 2*(k1 + k2) + k3) * sixth_ds;
+    }
+
+    return y0;
+}
+
 }
 
 #endif // NUMERICALINTEGRATION_H

@@ -105,7 +105,8 @@ inline VectorXd solveLevenbergMarquardt(VectorXd y0,
 typedef void(JacobFunc)(MatrixXd&,VectorXd&,VectorXd&);
 
 /*! Solve a convex system with a Levenberg algorithm with a user-supplied Jacobian.
-    The last call to the objective function f is guaranteed to to use the final solved y. */
+    The last call to the objective function f is guaranteed to to use the final solved y.
+    The Jacobian is initialized to zeroes, so only non-zero elements need to be assigned. */
 template<ObjFunc f, JacobFunc suppliedJacobianFunction>
 inline VectorXd solveLevenbergMarquardt(VectorXd y0,
                         double sos_tol = 1e-12,
