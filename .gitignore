@@ -5,6 +5,7 @@
 *.nav
 *.out
 *.snm
+*.synctex
 *.toc
 *.tmp
 *.pro.user*

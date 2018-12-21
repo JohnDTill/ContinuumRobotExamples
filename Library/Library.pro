@@ -9,4 +9,7 @@ HEADERS += \
     eigenmatrixtypes.h \
     numericaldifferentiation.h \
     numericalintegration.h \
-    simpleplotting.h
+    numericalpde.h \
+    simpleplotting.h \
+    timemanagement.h \
+    simpleanimation.h
