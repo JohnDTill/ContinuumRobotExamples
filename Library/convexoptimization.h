@@ -13,7 +13,7 @@ const int SOLVER_FAILURE = 15;
 static void checkInitialResidualForNaN(VectorXd& r){
     if( r.hasNaN() ){
         std::cout << "ERROR: The objective function is undefined at the initial guess:\n"
-                     "f = " << r.transpose() << "\n\n";
+                     "f = " << r.transpose() << '\n' << std::endl;
         throw(SOLVER_FAILURE);
     }
 }
@@ -22,6 +22,7 @@ static void checkJacobianForNaN(MatrixXd& J){
     if( J.hasNaN() ){
         std::cout << "ERROR: The Jacobian has large elements beyond machine precision.\n";
         if(J.rows()*J.cols() < 5000) std::cout << "J =\n" << J << "\n\n";
+        std::cout.flush();
         throw(SOLVER_FAILURE);
     }
 }
@@ -37,6 +38,7 @@ static void incrementIterationCounter(int& counter, VectorXd& y, VectorXd& r, Ma
             std::cout << "The jacobian is rank deficient.\n";
             if(J.rows()*J.cols() < 5000) std::cout << "J =\n" << J << "\n\n";
         }
+        std::cout.flush();
         throw(SOLVER_FAILURE);
     }
 }

@@ -9,4 +9,8 @@
 *.toc
 *.tmp
 *.pro.user*
+*.blend1
 build*
+temp/
+output/
+*.dat
