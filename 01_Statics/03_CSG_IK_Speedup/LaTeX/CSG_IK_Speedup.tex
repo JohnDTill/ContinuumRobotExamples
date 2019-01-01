@@ -79,6 +79,10 @@ The end effector position variable ``pE'' was previously declared as const, so o
 \begin{lstlisting}
 static Vector3d pE = 0.4*Vector3d::UnitZ();
 \end{lstlisting}
+For this scenario the end effector orientation remains flat, so we change the declaration:
+\begin{lstlisting}
+const Matrix3d RE = Matrix3d::Identity();
+\end{lstlisting}
 We also remove the code for plotting and outputting, and the associated variables ``p'', ``px'', and ``pz'' since this is not part of the benchmark. The end effector mass and the density of the rods are neglected. To match the robot from the paper, we also set the Young's modulus to $E=207$GPa, set $G$ using a Poisson’s ratio of 0.305, set the radius as $rad=0.0013/2$mm, and set the number of integration points to $N=40$.
 
 We will use std::clock\_t to measure the time elapsed during the simulation, so we include dependencies for ``stdio.h'' and ``ctime''. Then we update the main function to run the benchmark:
@@ -105,7 +109,7 @@ std::cout << "Solution rate: " << M/duration << "Hz" << std::endl;
 \end{lstlisting}
 We specify the total number of solutions as $M = 100$. The number of solutions is low right now since the code is slow, but we'll increase it as we go. The guess is updated with each solution since we get better behavior from the shooting method when the initial guess is close to the solution. We have specified additional solver options in the Levenberg-Marquardt algorithm. The second argument is the solver tolerance, which is the acceptable sum-of-squares of the objective function. The third argument is the maximum iterations to use before aborting and throwing an error. The fourth argument is the initial damping of the Levenberg-Marquardt algorithm, and the fifth argument is the adjustment in damping- in this case the damping is halved after a successful step.
 
-Finally we run the code and get the initial benchmark results. On my desktop the above code solves at 56 Hz. This is definitely on the low end of the computational efficiency we would want to teleoperate the robot.
+Finally we run the code and get the initial benchmark results. On my desktop the above code solves at 50 Hz. This is definitely on the low end of the computational efficiency we would want to teleoperate the robot.
 
 \section{Code Optimizations}
 
@@ -170,7 +174,7 @@ Map<Vector3d> m(&y[15]);
 \end{lstlisting}
 It turns out to be preferably to convert $\boldsymbol{R}$ to a matrix, presumably because it is referenced several times.
 
-Now we have specialized some of the calculations to avoid unnecessary work, and we have made some reasonable changes to the program structure to favor speed over readability while keeping the same number of lines of code. On my desktop this revised code solves at 350 Hz.
+Now we have specialized some of the calculations to avoid unnecessary work, and we have made some reasonable changes to the program structure to favor speed over readability while keeping the same number of lines of code. On my desktop this revised code solves at 315 Hz.
 
 \section{Reducing Number of Numerical Integration Calls}
 
@@ -318,7 +322,7 @@ Finally each pass through the benchmark loop we skip an integration
 for(int i = 0; i < M; i++){
         integrate = false;
 \end{lstlisting}
-This results in another significant speedup. Now the inverse kinematics benchmark solves at about 2100Hz on my desktop. However, we have added 52 to lines to the program, and rather complicated lines at that.
+This results in another significant speedup. Now the inverse kinematics benchmark solves at about 1930Hz on my desktop. However, we have added 52 to lines to the program, and rather complicated lines at that.
 
 
 \section{Multithreading}
@@ -548,14 +552,13 @@ for(int i = 0; i < num_threads-1; i++) workers[i].join();
 
 return 0;
 \end{lstlisting}
-With two threads the model solves at around 3700 Hz, with three around 4800 Hz, and six is similar to three. Of course by the time you reach six threads, you'll probably struggle to have enough cores to run them in parallel on a single PC.
+With two threads the model solves at around 3500 Hz, with three around 4600 Hz, and six is slightly slower than three. Of course by the time you reach six threads, you'll probably struggle to have enough cores to run them in parallel on a single PC.
 
 \section{Over-optimized Custom Integration Routine}
 
 The single-threaded integration code is probably good enough in most circumstances. However, I think it's interesting to see how much more performance we can gain if we're willing to over-optimize the numerical integration code. In the fifth example code folder, we write a function which integrates the Cosserat rod ODEs using a hard-coded fourth-order Runge-Kutta method, with calculations written on an element by element basis.
 
-This code is an unmaintainable mess, but it achieves a performance of about 4600Hz on the benchmark. One interesting aspect is that the tradeoff between readability and performance is not a fundamental issue; the optimizing compiler helps us to ease the burden of this tradeoff, and an optimizing compiler could potentially achieve the performance we see here starting from readable code. However, the C++ standard is fairly conservative in terms of what code transformations result in equivalent code, and the compiler probably isn't allowed to make all the changes we've made. But that's a tangent from robotics.
-
+This code is an unmaintainable mess, but it achieves a performance of about 4200Hz on the benchmark. One interesting aspect is that the tradeoff between readability and performance is not a fundamental issue; the optimizing compiler helps us to ease the burden of this tradeoff, and an optimizing compiler could potentially achieve the performance we see here starting from readable code. However, the C++ standard is fairly conservative in terms of what code transformations result in equivalent code, and the compiler probably isn't allowed to make all the changes we've made. But that's a tangent from robotics.
 
 \section{Conclusion}
 

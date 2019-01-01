@@ -20,7 +20,7 @@ const double J = 2*I;
 const DiagonalMatrix<double, 3> Kse = DiagonalMatrix<double, 3>(G*A,G*A,E*A);
 const DiagonalMatrix<double, 3> Kbt = DiagonalMatrix<double, 3>(E*I,E*I,G*J);
 static Vector3d pE = 0.4*Vector3d::UnitZ();
-const Matrix3d RE = Ry(10*pi/180); //Bend 10 degrees above the y-axis
+const Matrix3d RE = Matrix3d::Identity();
 const double alpha2 = 120*pi/180 - alpha1; //minor angle of the hole pattern
 
 //Hexagonal Stewart-Gough hole pattern

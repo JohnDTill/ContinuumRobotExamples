@@ -22,7 +22,7 @@ const double EI_inv = 1/(E*I);
 const DiagonalMatrix<double, 3> Kse_inv = DiagonalMatrix<double, 3>(G*A,G*A,E*A).inverse();
 const DiagonalMatrix<double, 3> Kbt_inv = DiagonalMatrix<double, 3>(E*I,E*I,G*J).inverse();
 static Vector3d pE = 0.4*Vector3d::UnitZ();
-const Matrix3d RE = Ry(10*pi/180); //Bend 10 degrees above the y-axis
+const Matrix3d RE = Matrix3d::Identity();
 const double alpha2 = 120*pi/180 - alpha1; //minor angle of the hole pattern
 
 //Hexagonal Stewart-Gough hole pattern
