@@ -116,7 +116,7 @@ inline Matrix3d Rz(double a){
 }
 
 /*! Generate a rotation matrix from a 3x1 vector via Rodrigues’s formula. */
-Matrix3d generateRotation(Vector3d k){
+inline Matrix3d generateRotation(Vector3d k){
     double a = k.norm();
     if( a == 0 ){
         return Matrix3d::Identity();
