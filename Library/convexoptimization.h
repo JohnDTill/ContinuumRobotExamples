@@ -55,7 +55,7 @@ inline VectorXd solveLevenbergMarquardt(VectorXd y0,
                         double incr_floor = 1e-12){
     VectorXd r = f(y0);
     checkInitialResidualForNaN(r);
-    double E = r.cwiseAbs2().sum();
+    double E = r.squaredNorm();
     if( E <= sos_tol ) return y0;
 
     VectorXd y  = y0;
@@ -76,7 +76,7 @@ inline VectorXd solveLevenbergMarquardt(VectorXd y0,
         B.diagonal() += damp*ones;
         VectorXd pc = B.selfadjointView<Eigen::Lower>().llt().solve(rhs);
         r = f(y + pc);
-        double Ec = r.cwiseAbs2().sum();
+        double Ec = r.squaredNorm();
 
         if( !r.hasNaN() && Ec < E ){
             y += pc;
@@ -91,7 +91,7 @@ inline VectorXd solveLevenbergMarquardt(VectorXd y0,
                 B.diagonal() += (damp - old_damp)*ones;
                 pc.noalias() = B.selfadjointView<Eigen::Lower>().llt().solve(rhs);
                 r.noalias() = f(y + pc);
-                Ec = r.cwiseAbs2().sum();
+                Ec = r.squaredNorm();
             }
 
             y += pc;
@@ -117,7 +117,7 @@ inline VectorXd solveLevenbergMarquardt(VectorXd y0,
                         double alm_adptv_coeff = 0.5){
     VectorXd r = f(y0);
     checkInitialResidualForNaN(r);
-    double E = r.cwiseAbs2().sum();
+    double E = r.squaredNorm();
     if( E <= sos_tol ) return y0;
 
     VectorXd y  = y0;
@@ -138,7 +138,7 @@ inline VectorXd solveLevenbergMarquardt(VectorXd y0,
         B.diagonal() += damp*ones;
         VectorXd pc = B.selfadjointView<Eigen::Lower>().llt().solve(rhs);
         r = f(y + pc);
-        double Ec = r.cwiseAbs2().sum();
+        double Ec = r.squaredNorm();
 
         if( !r.hasNaN() && Ec < E ){
             y += pc;
@@ -153,7 +153,7 @@ inline VectorXd solveLevenbergMarquardt(VectorXd y0,
                 B.diagonal() += (damp - old_damp)*ones;
                 pc.noalias() = B.selfadjointView<Eigen::Lower>().llt().solve(rhs);
                 r.noalias() = f(y + pc);
-                Ec = r.cwiseAbs2().sum();
+                Ec = r.squaredNorm();
             }
 
             y += pc;
