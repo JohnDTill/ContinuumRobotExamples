@@ -32,6 +32,23 @@ inline Matrix3d hat_postmultiply(Matrix3d m, Vector3d v){
                           m(2,1)*v(2) - m(2,2)*v(1), m(2,2)*v(0) - m(2,0)*v(2), m(2,0)*v(1) - m(2,1)*v(0)).finished();
 }
 
+/*! Efficiently calculates hat(v)*m. */
+inline Matrix3d hat_premultiply(Vector3d v, Matrix3d m){
+    return (Matrix3d() << v(1)*m(2,0) - v(2)*m(1,0), v(1)*m(2,1) - v(2)*m(1,1), v(1)*m(2,2) - v(2)*m(1,2),
+                          v(2)*m(0,0) - v(0)*m(2,0), v(2)*m(0,1) - v(0)*m(2,1), v(2)*m(0,2) - v(0)*m(2,2),
+                          v(0)*m(1,0) - v(1)*m(0,0), v(0)*m(1,1) - v(1)*m(0,1), v(0)*m(1,2) - v(1)*m(0,2)).finished();
+}
+
+/*! Find the square of a hatted matrix. */
+inline Matrix3d hat_squared(Vector3d y){
+    Matrix3d y_hat_squared;
+    y_hat_squared << -y(1)*y(1)-y(2)*y(2),            y(0)*y(1),             y(0)*y(2),
+                                y(0)*y(1), -y(0)*y(0)-y(2)*y(2),             y(1)*y(2),
+                                y(0)*y(2),            y(1)*y(2),  -y(0)*y(0)-y(1)*y(1);
+
+    return y_hat_squared;
+}
+
 /*! Efficiently calculates R.transpose()*v. */
 inline Vector3d transposeMultiply(Matrix3d R, Vector3d v){
     return (Vector3d() << R(0,0)*v(0) + R(1,0)*v(1) + R(2,0)*v(2),
