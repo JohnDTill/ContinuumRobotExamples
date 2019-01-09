@@ -107,7 +107,7 @@ VectorXd shootingFunction(VectorXd guess){
 }
 
 const double incr = 1e-8;
-void jacobianFunction(MatrixXd& J, VectorXd& guess, VectorXd&){
+void jacobianFunction(MatrixXd& J_out, VectorXd& guess, VectorXd&){
     for(int i = 0; i < 6; i++){
         double L = guess(30+i);
         for(int j = 0; j < 5; j++){
@@ -128,11 +128,11 @@ void jacobianFunction(MatrixXd& J, VectorXd& guess, VectorXd&){
             Vector3d mL_incr = yf.segment<3>(15);
 
             //Jacobian blocks are partial derivatives of objective function equations
-            J.block<3,1>(5*i, 5*i+j) = (pL_incr - pL_shot[i]) / incr;
-            J.block<2,1>(5*i+3, 5*i+j) = linear_rotation_error( (RL_incr - RL_shot[i])/incr, RE).segment<2>(0);
+            J_out.block<3,1>(5*i, 5*i+j) = (pL_incr - pL_shot[i]) / incr;
+            J_out.block<2,1>(5*i+3, 5*i+j) = linear_rotation_error( (RL_incr - RL_shot[i])/incr, RE).segment<2>(0);
             Vector3d nL_partial = (nL_incr - nL[i])/incr;
-            J.block<3,1>(30, 5*i+j) = -nL_partial;
-            J.block<3,1>(33, 5*i+j) = -( (mL_incr - mL[i]) / incr  + (RE*r[i]).cross(nL_partial) );
+            J_out.block<3,1>(30, 5*i+j) = -nL_partial;
+            J_out.block<3,1>(33, 5*i+j) = -( (mL_incr - mL[i]) / incr  + (RE*r[i]).cross(nL_partial) );
         }
 
         //Partial derivatives w.r.t. arc length do not require integration
@@ -140,11 +140,11 @@ void jacobianFunction(MatrixXd& J, VectorXd& guess, VectorXd&){
         yL << pL_shot[i], Map<VectorXd>(RL_shot[i].data(), 9), nL[i], mL[i];
         cosseratRodOde(y_s, yL);
 
-        J.block<3,1>(5*i, 30+i) = y_s.segment<3>(0);
-        J.block<2,1>(5*i+3, 30+i) = linear_rotation_error( Map<Matrix3d>(&y_s[3]), RE).segment<2>(0);
+        J_out.block<3,1>(5*i, 30+i) = y_s.segment<3>(0);
+        J_out.block<2,1>(5*i+3, 30+i) = linear_rotation_error( Map<Matrix3d>(&y_s[3]), RE).segment<2>(0);
 
-        J.block<3,1>(30, 30+i) = -y_s.segment<3>(12);
-        J.block<3,1>(33, 30+i) = -( y_s.segment<3>(15)  + (RE*r[i]).cross(y_s.segment<3>(12)));
+        J_out.block<3,1>(30, 30+i) = -y_s.segment<3>(12);
+        J_out.block<3,1>(33, 30+i) = -( y_s.segment<3>(15)  + (RE*r[i]).cross(y_s.segment<3>(12)));
     }
 }
 

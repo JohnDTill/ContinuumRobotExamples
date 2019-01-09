@@ -28,7 +28,7 @@ const double J = 2*I;
 const DiagonalMatrix<double, 3> Kbt (E*I,E*I,G*J);
 const Matrix3d Kbt_dense = Kbt.toDenseMatrix();
 
-void kirchhoffTendonRobotOde(VectorXd& y_s, VectorXd& y){
+void kirchhoffTendonRobotOde(VectorXd& y_s_out, VectorXd& y){
     //Unpack state vector
     Matrix3d R = Map<Matrix3d>(&y[3]);
     Vector3d nb = Map<Vector3d>(&y[12]);
@@ -53,10 +53,10 @@ void kirchhoffTendonRobotOde(VectorXd& y_s, VectorXd& y){
     }
 
     //Pack state vector derivative
-    Map<Vector3d> p_s(&y_s[0]);
-    Map<Matrix3d> R_s(&y_s[3]);
-    Map<Vector3d> nb_s(&y_s[12]);
-    Map<Vector3d> u_s(&y_s[15]);
+    Map<Vector3d> p_s(&y_s_out[0]);
+    Map<Matrix3d> R_s(&y_s_out[3]);
+    Map<Vector3d> nb_s(&y_s_out[12]);
+    Map<Vector3d> u_s(&y_s_out[15]);
 
     //ODEs
     p_s = R.col(2);

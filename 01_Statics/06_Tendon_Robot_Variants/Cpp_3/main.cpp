@@ -33,7 +33,7 @@ const Matrix3d Kse_dense = Kse.toDenseMatrix();
 const Matrix3d Kbt_dense = Kbt.toDenseMatrix();
 static VectorXd tau;
 
-void cosseratTendonRobotOde(VectorXd& y_s, VectorXd& y){
+void cosseratTendonRobotOde(VectorXd& y_s_out, VectorXd& y){
     //Unpack state vector
     Matrix3d R = Map<Matrix3d>(&y[3]);
     Vector3d v = Map<Vector3d>(&y[12]);
@@ -45,7 +45,7 @@ void cosseratTendonRobotOde(VectorXd& y_s, VectorXd& y){
     Matrix3d G = Matrix3d::Zero();
     Matrix3d H_plus_Kbt = Kbt_dense;
 
-    Map<VectorXd> pb_s_norm(&y_s[18], num_tendons);
+    Map<VectorXd> pb_s_norm(&y_s_out[18], num_tendons);
 
     for(int i = 0; i < num_tendons; i++){
         Vector3d pb_si = u.cross(r[i]) + v;
@@ -72,9 +72,9 @@ void cosseratTendonRobotOde(VectorXd& y_s, VectorXd& y){
            -u.cross(mb) - v.cross(nb) - b;
 
     //Pack state vector derivative
-    Map<Vector3d> p_s(&y_s[0]);
-    Map<Matrix3d> R_s(&y_s[3]);
-    Map<Vector6d> vs_and_us(&y_s[12]);
+    Map<Vector3d> p_s(&y_s_out[0]);
+    Map<Matrix3d> R_s(&y_s_out[3]);
+    Map<Vector6d> vs_and_us(&y_s_out[12]);
 
     //ODEs
     p_s = R*v;

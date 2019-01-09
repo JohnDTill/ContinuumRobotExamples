@@ -79,7 +79,7 @@ There are significant simplifications to the model if we neglect the shear and e
 
 The state vector has $\boldsymbol{n}^b$ instead of $\boldsymbol{v}$, and the ODE function is changed accordingly:
 \begin{lstlisting}
-void kirchhoffTendonRobotOde(VectorXd& y_s, VectorXd& y){
+void kirchhoffTendonRobotOde(VectorXd& y_s_out, VectorXd& y){
     //Unpack state vector
     Matrix3d R = Map<Matrix3d>(&y[3]);
     Vector3d nb = Map<Vector3d>(&y[12]);
@@ -88,10 +88,10 @@ void kirchhoffTendonRobotOde(VectorXd& y_s, VectorXd& y){
 Of course calculations involving shear or extension are modified so that $\boldsymbol{v} = \boldsymbol{e}_3$. The ODEs are also changed so that there is only a 3x3 linear system as in Equation (17):
 \begin{lstlisting}
     //Pack state vector derivative
-    Map<Vector3d> p_s(&y_s[0]);
-    Map<Matrix3d> R_s(&y_s[3]);
-    Map<Vector3d> nb_s(&y_s[12]);
-    Map<Vector3d> u_s(&y_s[15]);
+    Map<Vector3d> p_s(&y_s_out[0]);
+    Map<Matrix3d> R_s(&y_s_out[3]);
+    Map<Vector3d> nb_s(&y_s_out[12]);
+    Map<Vector3d> u_s(&y_s_out[15]);
 
     //ODEs
     p_s = R.col(2);
@@ -242,7 +242,7 @@ tau = guess.segment<num_tendons>(6);
 \end{lstlisting}
 Based on how the backbone deforms, each tendon will have some arc length it is routed along the backbone, with errors resulting from incorrect lengths. Calculating the errors requires modifying the ODE function to also integrate the tendon arc lengths. We extend the state vector so that the last entries are the tendon arc lengths: 
 \begin{lstlisting}
-Map<VectorXd> pb_s_norm(&y_s[18], num_tendons);
+Map<VectorXd> pb_s_norm(&y_s_out[18], num_tendons);
 \end{lstlisting}
 Now the change in tendon arc length with respect to the change in reference arc length is stored as part of the state vector derivative:
 \begin{lstlisting}

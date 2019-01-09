@@ -184,7 +184,7 @@ static void setJacobianOfLeg(int i){
     J_global.block<3,1>(33, 30+i) = -( y_s.segment<3>(15)  + (RE*r[i]).cross(y_s.segment<3>(12)));
 }
 
-static void jacobianFunction(MatrixXd& J, VectorXd&, VectorXd&){
+static void jacobianFunction(MatrixXd& J_out, VectorXd&, VectorXd&){
     setWorkerState(CALCULATING_JACOBIAN);
     switch(num_threads){
         case 1:
@@ -201,7 +201,7 @@ static void jacobianFunction(MatrixXd& J, VectorXd&, VectorXd&){
     }
     waitOnWorkers();
 
-    J = J_global;
+    J_out = J_global;
 }
 
 static void workerFunction(int id){

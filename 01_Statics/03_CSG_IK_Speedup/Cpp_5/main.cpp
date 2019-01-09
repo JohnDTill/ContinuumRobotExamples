@@ -65,33 +65,33 @@ void cosseratRodOde(VectorXd& y_s_out, VectorXd& y){
 //Hard-coded numerical integration routine for a Cosserat rod
 const int N = 40;
 const int Nm1 = N-1;
-void ode4_CosseratRodOde(VectorXd& y0, double L){
+void ode4_CosseratRodOde(VectorXd& y_out, double L){
     double ds = L/Nm1;
     double half_ds = ds/2;
     double sixth_ds = ds/6;
 
     for(int i = Nm1; i > 0; i--){
-        #define p0 y0[0]
-        #define p1 y0[1]
-        #define p2 y0[2]
+        #define p0 y_out[0]
+        #define p1 y_out[1]
+        #define p2 y_out[2]
 
-        #define R00 y0[3]
-        #define R10 y0[4]
-        #define R20 y0[5]
-        #define R01 y0[6]
-        #define R11 y0[7]
-        #define R21 y0[8]
-        #define R02 y0[9]
-        #define R12 y0[10]
-        #define R22 y0[11]
+        #define R00 y_out[3]
+        #define R10 y_out[4]
+        #define R20 y_out[5]
+        #define R01 y_out[6]
+        #define R11 y_out[7]
+        #define R21 y_out[8]
+        #define R02 y_out[9]
+        #define R12 y_out[10]
+        #define R22 y_out[11]
 
-        #define n0 y0[12]
-        #define n1 y0[13]
-        #define n2 y0[14]
+        #define n0 y_out[12]
+        #define n1 y_out[13]
+        #define n2 y_out[14]
 
-        #define m0 y0[15]
-        #define m1 y0[16]
-        #define m2 y0[17]
+        #define m0 y_out[15]
+        #define m1 y_out[16]
+        #define m2 y_out[17]
 
         double v0 = GA_inv*(R00*n0 + R10*n1 + R20*n2);
         double v1 = GA_inv*(R01*n0 + R11*n1 + R21*n2);
@@ -313,7 +313,7 @@ VectorXd shootingFunction(VectorXd guess){
 
 static VectorXd y_s(18);
 const double incr = 1e-8;
-void jacobianFunction(MatrixXd& J, VectorXd& guess, VectorXd&){
+void jacobianFunction(MatrixXd& J_out, VectorXd& guess, VectorXd&){
     for(int i = 0; i < 6; i++){
         double L = guess(30+i);
         for(int j = 0; j < 5; j++){
@@ -334,22 +334,22 @@ void jacobianFunction(MatrixXd& J, VectorXd& guess, VectorXd&){
             Vector3d mL_incr = y.segment<3>(15);
 
             //Jacobian blocks are partial derivatives of objective function equations
-            J.block<3,1>(5*i, 5*i+j) = (pL_incr - pL_shot[i]) / incr;
-            J.block<2,1>(5*i+3, 5*i+j) = linear_rotation_error( (RL_incr - RL_shot[i])/incr, RE).segment<2>(0);
+            J_out.block<3,1>(5*i, 5*i+j) = (pL_incr - pL_shot[i]) / incr;
+            J_out.block<2,1>(5*i+3, 5*i+j) = linear_rotation_error( (RL_incr - RL_shot[i])/incr, RE).segment<2>(0);
             Vector3d nL_partial = (nL_incr - nL[i])/incr;
-            J.block<3,1>(30, 5*i+j) = -nL_partial;
-            J.block<3,1>(33, 5*i+j) = -( (mL_incr - mL[i]) / incr  + (RE*r[i]).cross(nL_partial) );
+            J_out.block<3,1>(30, 5*i+j) = -nL_partial;
+            J_out.block<3,1>(33, 5*i+j) = -( (mL_incr - mL[i]) / incr  + (RE*r[i]).cross(nL_partial) );
         }
 
         //Partial derivatives w.r.t. arc length do not require integration
         y << pL_shot[i], Map<VectorXd>(RL_shot[i].data(), 9), nL[i], mL[i];
         cosseratRodOde(y_s, y);
 
-        J.block<3,1>(5*i, 30+i) = y_s.segment<3>(0);
-        J.block<2,1>(5*i+3, 30+i) = linear_rotation_error( Map<Matrix3d>(&y_s[3]), RE).segment<2>(0);
+        J_out.block<3,1>(5*i, 30+i) = y_s.segment<3>(0);
+        J_out.block<2,1>(5*i+3, 30+i) = linear_rotation_error( Map<Matrix3d>(&y_s[3]), RE).segment<2>(0);
 
-        J.block<3,1>(30, 30+i) = -y_s.segment<3>(12);
-        J.block<3,1>(33, 30+i) = -( y_s.segment<3>(15)  + (RE*r[i]).cross(y_s.segment<3>(12)));
+        J_out.block<3,1>(30, 30+i) = -y_s.segment<3>(12);
+        J_out.block<3,1>(33, 30+i) = -( y_s.segment<3>(15)  + (RE*r[i]).cross(y_s.segment<3>(12)));
     }
 }
 

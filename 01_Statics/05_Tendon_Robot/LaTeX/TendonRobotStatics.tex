@@ -117,7 +117,7 @@ There is some redundancy in the stiffness matrices; we have both dense and diago
 The core of the model is the ODE function. The state variables are $\boldsymbol{p}$, $\boldsymbol{R}$, $\boldsymbol{v}$, and $\boldsymbol{u}$. At the start of the ODE function we unpack the state vector:
 \newpage
 \begin{lstlisting}
-void cosseratTendonRobotOde(VectorXd& y_s, VectorXd& y){
+void cosseratTendonRobotOde(VectorXd& y_s_out, VectorXd& y){
     //Unpack state vector
     Matrix3d R = Map<Matrix3d>(&y[3]);
     Vector3d v = Map<Vector3d>(&y[12]);
@@ -173,9 +173,9 @@ We solve for the body frame internal force and moment as intermediate variables 
 With the linear system setup, we are positioned to complete the ODE function by solving for the derivatives:
 \begin{lstlisting}
     //Pack state vector derivative
-    Map<Vector3d> p_s(&y_s[0]);
-    Map<Matrix3d> R_s(&y_s[3]);
-    Map<Vector6d> vs_and_us(&y_s[12]);
+    Map<Vector3d> p_s(&y_s_out[0]);
+    Map<Matrix3d> R_s(&y_s_out[3]);
+    Map<Vector6d> vs_and_us(&y_s_out[12]);
 
     //ODEs
     p_s = R*v;
