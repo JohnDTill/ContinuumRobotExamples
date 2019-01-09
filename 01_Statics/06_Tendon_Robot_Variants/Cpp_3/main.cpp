@@ -91,8 +91,8 @@ VectorXd shootingFunction(VectorXd guess){
     Vector3d n0 = guess.segment<3>(0);
     Vector3d v0 = Kse.inverse()*n0 + Vector3d::UnitZ();
     Vector3d u0 = guess.segment<3>(3);
-    tau = guess.segment<num_tendons>(6).cwiseMin(0);
-    VectorXd slack = -(guess.segment<num_tendons>(6).cwiseMax(0));
+    tau = guess.segment<num_tendons>(6).cwiseMax(0);
+    VectorXd slack = -(guess.segment<num_tendons>(6).cwiseMin(0));
 
     VectorXd y0(18+num_tendons);
     y0 << p0, Map<VectorXd>(Matrix3d(R0).data(),9), v0, u0, q;

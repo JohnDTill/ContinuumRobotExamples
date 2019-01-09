@@ -276,8 +276,8 @@ VectorXd length_error = integrated_lengths - (l_star + stretch);
 Now the tendons will stretch under tension. Unfortunately, they will also contract under compression. 
 To disallow compression, we include the effects of slack. Since slack and tension are mutually exclusive effects, we use a single variable to represent them both when we unpack the guess:
 \begin{lstlisting}
-tau = guess.segment<num_tendons>(6).cwiseMin(0);
-VectorXd slack = -(guess.segment<num_tendons>(6).cwiseMax(0));
+tau = guess.segment<num_tendons>(6).cwiseMax(0);
+VectorXd slack = -(guess.segment<num_tendons>(6).cwiseMin(0));
 \end{lstlisting}
 Depending on the sign, we have either tension or slack. Hopefully the shooting method optimization space is smooth around the transition; it seems to work well. Then the length error is revised to include slack:
 \begin{lstlisting}
