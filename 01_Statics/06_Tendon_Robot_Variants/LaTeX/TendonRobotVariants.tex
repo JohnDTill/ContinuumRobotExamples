@@ -186,7 +186,7 @@ Then we can solve the problem and visualize the effects of helical routing:
 		\includegraphics[width=0.8\textwidth]{fig/Helical.jpg}
 \end{figure}
 
-We could also implement a converging tendon strategy like in the paper ``Continuum Robots with Displacement-Controlled Tendons: Modeling, Stiffness Analysis, and Design Improvements'', which is in press with IEEE T-RO. We revise the tendon function:
+We could also implement a converging tendon strategy like in the paper \href{https://ieeexplore.ieee.org/document/8606257}{``Continuum Robot Stiffness Under External Loads and Prescribed Tendon Displacements''}. We revise the tendon function:
 \begin{lstlisting}
 //Converging routing
 const double offset = 0.01506;
@@ -215,7 +215,7 @@ Then solving with converging routing yields the following solution:
 
 \section{Tendon Displacement Control}
 
-In the examples so far, the forward kinematics input has been the tendon tensions. However, most actuator control position instead of force. This scenario is also considered in the paper ``Continuum Robots with Displacement-Controlled Tendons: Modeling, Stiffness Analysis, and Design Improvements''. There are additional unknowns since the tendon tensions are not given, and additional constraints since the backbone must take a shape so that the tendon lengths are correct. For example, increasing the distance $q_i$ the tendon extends below the baseplate will cause the backbone to bend so that the arc length of the tendon above the baseplate is reduced, and the total tendon length remains constant (assuming an inextensible tendon).
+In the examples so far, the forward kinematics input has been the tendon tensions. However, most actuator control position instead of force. This scenario is also considered in the paper \href{https://ieeexplore.ieee.org/document/8606257}{``Continuum Robot Stiffness Under External Loads and Prescribed Tendon Displacements''}. There are additional unknowns since the tendon tensions are not given, and additional constraints since the backbone must take a shape so that the tendon lengths are correct. For example, increasing the distance $q_i$ the tendon extends below the baseplate will cause the backbone to bend so that the arc length of the tendon above the baseplate is reduced, and the total tendon length remains constant (assuming an inextensible tendon).
 
 \begin{figure}[h]
 	\centering
