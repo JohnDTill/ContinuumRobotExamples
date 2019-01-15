@@ -198,7 +198,7 @@ VectorXd obj(VectorXd guess){
     return residual;
 }
 
-int main(){
+int main(int, char**){
     initialize_StewartGough_pattern();
 
     const bool Kinematics = false;

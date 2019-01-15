@@ -105,7 +105,7 @@ The $(\cdot)^\vee$ operator is the inverse of the hat $\widehat{\cdot}$ operator
 
 Now we can solve the BVP by using a solver on the objective function. \emph{Convex optimization} routines are defined in ``convexoptimization.h'', and we make a call to one of these algorithms:
 \begin{lstlisting}
-int main(){
+int main(int, char**){
     Vector6d init_guess = Vector6d::Zero();
 
     //Solve with shooting method

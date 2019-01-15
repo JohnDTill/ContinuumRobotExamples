@@ -235,7 +235,7 @@ The tendon loading terms are given by Equations (18), (19), and (20). Finally we
 
 With the objective function complete, we are finally ready to write the simulation driver. Over in the main function, the problem is solved in just a few lines:
 \begin{lstlisting}
-int main(){
+int main(int, char**){
     Vector6d init_guess = Vector6d::Zero(); //nb and u
 
     //Solve with shooting method

@@ -113,7 +113,7 @@ VectorXd shootingFunction(VectorXd guess){
     return residual;
 }
 
-int main(){
+int main(int, char**){
     initialize_StewartGough_pattern();
 
     VectorXd init_guess(36);

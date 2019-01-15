@@ -230,7 +230,7 @@ Depending on the template parameter, this will either integrate the static ODE o
 
 Now we have all the subfunctions we need and we can start on the main function. In the first step, we solve for the initial conditions:
 \begin{lstlisting}
-int main(){
+int main(int, char**){
     //Solve initial conditions
     Vector6d guess = Vector6d::Zero();
     Vector6d reaction_wrench = solveLevenbergMarquardt<objFunc<false> >(guess);

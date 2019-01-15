@@ -128,7 +128,7 @@ VectorXd shootingFunction(VectorXd guess){
     return distal_error;
 }
 
-int main(){
+int main(int, char**){
     VectorXd init_guess = VectorXd::Zero(6 + num_tendons); //nb, u, and tau
 
     //Solve with shooting method

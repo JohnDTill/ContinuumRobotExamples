@@ -144,7 +144,7 @@ VectorXd objFunc(VectorXd guess){
     return distal_error;
 }
 
-int main(){
+int main(int, char**){
     //Solve initial conditions
     Vector6d guess = Vector6d::Zero();
     Vector6d reaction_wrench = solveLevenbergMarquardt<objFunc<false> >(guess);

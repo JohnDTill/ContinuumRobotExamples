@@ -148,7 +148,7 @@ VectorXd shootingFunction(VectorXd guess){
     return distal_error;
 }
 
-int main(){
+int main(int, char**){
     Vector6d init_guess = Vector6d::Zero(); //nb and u
 
     //Solve with shooting method

@@ -46,7 +46,7 @@ VectorXd cosseratRodOde(VectorXd y){
     return y_s;
 }
 
-int main(){
+int main(int, char**){
     //Set initial conditions
     Vector3d p0 = Vector3d::Zero();
     Matrix3d R0 = Matrix3d::Identity();

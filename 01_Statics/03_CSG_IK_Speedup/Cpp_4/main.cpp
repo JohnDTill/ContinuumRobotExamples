@@ -244,7 +244,7 @@ static void workerFunction(int id){
     }
 }
 
-int main(){
+int main(int, char**){
     std::thread workers[num_threads-1];
     setWorkerState(RESTING);
     for(int i = 0; i < num_threads-1; i++)

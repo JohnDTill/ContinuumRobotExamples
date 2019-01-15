@@ -539,7 +539,7 @@ static void workerFunction(int id){
 \end{lstlisting}
 It's just a continuous loop of checking for work, performing any tasks and reporting completion. Finally in the main script we can start our worker pool:
 \begin{lstlisting}
-int main(){
+int main(int, char**){
     std::!-\textcolor{QtPurpleColor}{thread}-! workers[num_threads-1];
     setWorkerState(RESTING);
     for(int i = 0; i < num_threads-1; i++)

@@ -150,7 +150,7 @@ inline Matrix3d hat(Vector3d y){
 
 Now we can actually create the main function. The first step is to set the state vector initial conditions:
 \begin{lstlisting}
-int main(){
+int main(int, char**){
     //Set initial conditions
     Vector3d p0 = Vector3d::Zero();
     Matrix3d R0 = Matrix3d::Identity();

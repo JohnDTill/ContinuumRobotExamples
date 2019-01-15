@@ -148,7 +148,7 @@ void jacobianFunction(MatrixXd& J_out, VectorXd& guess, VectorXd&){
     }
 }
 
-int main(){
+int main(int, char**){
     initialize_StewartGough_pattern();
 
     VectorXd guess(36);

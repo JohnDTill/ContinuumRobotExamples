@@ -209,7 +209,7 @@ The only variability in the approach is whether we integrate using a static or d
 
 With the objective function finished, we have all the subfunctions we need and we can move on to the main method. Of course we begin by setting up the hole pattern:
 \begin{lstlisting}
-int main(){
+int main(int, char**){
     initialize_StewartGough_pattern();
 \end{lstlisting}
 Calling the forward dynamic objective function with ``obj<true,true>'' is not very intuitive, but we can fix this by defining several Booleans:
