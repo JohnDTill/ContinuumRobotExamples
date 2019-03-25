@@ -27,7 +27,7 @@
 		%
 		otherkeywords={Vector3d, DiagonalMatrix, VectorXd, Matrix3d, Map, MatrixXd, Vector6d, Vector2d,
 									std, QtCharts, QChart, QLineSeries, MainWindow, QKeyEvent, QPen, QColor,
-									QList, QPointF, Matrix3Xd,
+									QList, QPointF, Matrix3Xd, Horizontal, Vertical,
 									waitOnWorkers, setWorkerState, integrateRod, setJacobianOfLeg,
 									UnitX, pow, transpose, segment, UnitZ, cross, hat_postmultiply,
 									Zero, Identity, UnitY, cosseratRodOde, ode4, cols, row, main, shootingFunction,
@@ -35,13 +35,13 @@
 									Ry, Rz, initialize_StewartGough_pattern, clock, endl, jacobianFunction, workerFunction,
 									sin, cos, finished, inverseKinematicsCSG, initializeCharts, refreshCharts,
 									keyPressEvent, resetKinematicsSolver, setTitleText, addWidget, fromRgb, setWidthF,
-									setPen, addSeries, createDefaultAxes, legend, hide, axisX, axisY, setRange,
+									setPen, addSeries, createDefaultAxes, legend, hide, axes, back, setRange,
 									getLegCenterline, replace, first, hat, resetCSG, last,
 									Key_Q, Key_W, Key_E, Key_A, Key_S, Key_D, Key_U, Key_I, Key_O,
 									Key_J, Key_K, Key_L},
     morekeywords=[2]{Vector3d, DiagonalMatrix, VectorXd, Matrix3d, Map, MatrixXd, Vector6d, Vector2d,
 		                 std, QtCharts, QChart, QLineSeries, MainWindow, QKeyEvent, QPen, QColor,
-										 QList, QPointF, Matrix3Xd,
+										 QList, QPointF, Matrix3Xd, Horizontal, Vertical,
 										 Key_Q, Key_W, Key_E, Key_A, Key_S, Key_D, Key_U, Key_I, Key_O,
 									   Key_J, Key_K, Key_L},
 		morekeywords=[3]{UnitX, UnitZ, pow, inverse, transpose, segment, cross, hat_postmultiply,
@@ -51,7 +51,7 @@
 									 	 waitOnWorkers, setWorkerState, integrateRod, setJacobianOfLeg, workerFunction,
 										 sin, cos, finished, inverseKinematicsCSG, initializeCharts, refreshCharts,
 										 keyPressEvent, resetKinematicsSolver, setTitleText, addWidget, fromRgb, setWidthF,
-										 setPen, addSeries, createDefaultAxes, legend, hide, axisX, axisY, setRange,
+										 setPen, addSeries, createDefaultAxes, legend, hide, axes, back, setRange,
 										 getLegCenterline, replace, first, hat, resetCSG, last},
     %
 		frame = single,
@@ -134,25 +134,25 @@ for(int i = 0; i < 4; i++){
 \end{lstlisting}
 The outer loop iterates over the four different views, and an inner loop iterates over the line series for each leg. We also initialize the chart axes, which we edit in the next step:
 \begin{lstlisting}
-charts[0].axisX()->setRange(-0.25, 0.25);
-charts[0].axisY()->setRange(0, 0.6);
-charts[0].axisX()->setTitleText("x (m)");
-charts[0].axisY()->setTitleText("z (m)");
+charts[0].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Horizontal).back()->setRange(-0.25, 0.25);
+charts[0].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Vertical).back()->setRange(0, 0.6);
+charts[0].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Horizontal).back()->setTitleText("x (m)");
+charts[0].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Vertical).back()->setTitleText("z (m)");
 
-charts[1].axisX()->setRange(-0.25, 0.25);
-charts[1].axisY()->setRange(-0.25, 0.25);
-charts[1].axisX()->setTitleText("x (m)");
-charts[1].axisY()->setTitleText("y (m)");
+charts[1].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Horizontal).back()->setRange(-0.25, 0.25);
+charts[1].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Vertical).back()->setRange(-0.25, 0.25);
+charts[1].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Horizontal).back()->setTitleText("x (m)");
+charts[1].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Vertical).back()->setTitleText("y (m)");
 
-charts[2].axisX()->setRange(-0.25, 0.25);
-charts[2].axisY()->setRange(0, 0.6);
-charts[2].axisX()->setTitleText("y (m)");
-charts[2].axisY()->setTitleText("z (m)");
+charts[2].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Horizontal).back()->setRange(-0.25, 0.25);
+charts[2].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Vertical).back()->setRange(0, 0.6);
+charts[2].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Horizontal).back()->setTitleText("y (m)");
+charts[2].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Vertical).back()->setTitleText("z (m)");
 
-charts[3].axisX()->setRange(-0.2, 0.2);
-charts[3].axisY()->setRange(0, 0.6);
-charts[3].axisX()->hide();
-charts[3].axisY()->hide();
+charts[3].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Horizontal).back()->setRange(-0.2, 0.2);
+charts[3].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Vertical).back()->setRange(0, 0.6);
+charts[3].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Horizontal).back()->hide();
+charts[3].axes(!-\textcolor{QtPurpleColor}{Qt}-!::Vertical).back()->hide();
 \end{lstlisting}
 There are several lines of code here to handle the specifics of each view, but the logic is straightforward. Finally, we end the chart initialization function by plotting the robot shape:
 \begin{lstlisting}

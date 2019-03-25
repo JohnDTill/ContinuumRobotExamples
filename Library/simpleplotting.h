@@ -49,8 +49,8 @@ static void plot(VectorXd x, VectorXd y, QString title = "", QString x_title = "
     chart->addSeries(p);
 
     chart->createDefaultAxes();
-    chart->axisX()->setTitleText(x_title);
-    chart->axisY()->setTitleText(y_title);
+    chart->axes(Qt::Horizontal).back()->setTitleText(x_title);
+    chart->axes(Qt::Vertical).back()->setTitleText(y_title);
     chart->legend()->hide();
 
     QtCharts::QChartView* chartView = new QtCharts::QChartView(chart);
@@ -99,7 +99,7 @@ static void plot(std::vector<VectorXd> x, std::vector<VectorXd> y, std::vector<V
     QtCharts::QChart* chart = new QtCharts::QChart();
     chart->setTitle(title);
 
-    for(int i = 0; i < x.size(); i++){
+    for(unsigned long long i = 0; i < x.size(); i++){
         VectorXd& x_i = x[i];
         VectorXd& y_i = y[i];
 
@@ -130,8 +130,8 @@ static void plot(std::vector<VectorXd> x, std::vector<VectorXd> y, std::vector<V
     }
 
     chart->createDefaultAxes();
-    chart->axisX()->setTitleText(x_title);
-    chart->axisY()->setTitleText(y_title);
+    chart->axes(Qt::Horizontal).back()->setTitleText(x_title);
+    chart->axes(Qt::Vertical).back()->setTitleText(y_title);
     chart->legend()->hide();
 
     QtCharts::QChartView* chartView = new QtCharts::QChartView(chart);

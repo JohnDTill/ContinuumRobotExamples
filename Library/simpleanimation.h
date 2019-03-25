@@ -89,8 +89,8 @@ inline void playAnimation(MatrixXd x,
     chart->addSeries(p);
 
     chart->createDefaultAxes();
-    chart->axisX()->setTitleText(x_title);
-    chart->axisY()->setTitleText(y_title);
+    chart->axes(Qt::Horizontal).back()->setTitleText(x_title);
+    chart->axes(Qt::Vertical).back()->setTitleText(y_title);
     chart->legend()->hide();
 
     double x_min = x.minCoeff();
@@ -99,8 +99,8 @@ inline void playAnimation(MatrixXd x,
     double y_max = y.maxCoeff();
     double x_range = x_max - x_min;
     double y_range = y_max - y_min;
-    chart->axisX()->setRange(x_min - 0.05*x_range, x_max + 0.05*x_range);
-    chart->axisY()->setRange(y_min - 0.05*y_range, y_max + 0.05*y_range);
+    chart->axes(Qt::Horizontal).back()->setRange(x_min - 0.05*x_range, x_max + 0.05*x_range);
+    chart->axes(Qt::Vertical).back()->setRange(y_min - 0.05*y_range, y_max + 0.05*y_range);
 
     QtCharts::QChartView* chartView = new QtCharts::QChartView(chart);
     chartView->resize(600,600);

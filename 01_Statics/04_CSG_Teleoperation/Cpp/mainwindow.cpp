@@ -41,25 +41,25 @@ void MainWindow::initializeCharts(){
         charts[i].legend()->hide();
     }
 
-    charts[0].axisX()->setRange(-0.25, 0.25);
-    charts[0].axisY()->setRange(0, 0.6);
-    charts[0].axisX()->setTitleText("x (m)");
-    charts[0].axisY()->setTitleText("z (m)");
+    charts[0].axes(Qt::Horizontal).back()->setRange(-0.25, 0.25);
+    charts[0].axes(Qt::Vertical).back()->setRange(0, 0.6);
+    charts[0].axes(Qt::Horizontal).back()->setTitleText("x (m)");
+    charts[0].axes(Qt::Vertical).back()->setTitleText("z (m)");
 
-    charts[1].axisX()->setRange(-0.25, 0.25);
-    charts[1].axisY()->setRange(-0.25, 0.25);
-    charts[1].axisX()->setTitleText("x (m)");
-    charts[1].axisY()->setTitleText("y (m)");
+    charts[1].axes(Qt::Horizontal).back()->setRange(-0.25, 0.25);
+    charts[1].axes(Qt::Vertical).back()->setRange(-0.25, 0.25);
+    charts[1].axes(Qt::Horizontal).back()->setTitleText("x (m)");
+    charts[1].axes(Qt::Vertical).back()->setTitleText("y (m)");
 
-    charts[2].axisX()->setRange(-0.25, 0.25);
-    charts[2].axisY()->setRange(0, 0.6);
-    charts[2].axisX()->setTitleText("y (m)");
-    charts[2].axisY()->setTitleText("z (m)");
+    charts[2].axes(Qt::Horizontal).back()->setRange(-0.25, 0.25);
+    charts[2].axes(Qt::Vertical).back()->setRange(0, 0.6);
+    charts[2].axes(Qt::Horizontal).back()->setTitleText("y (m)");
+    charts[2].axes(Qt::Vertical).back()->setTitleText("z (m)");
 
-    charts[3].axisX()->setRange(-0.2, 0.2);
-    charts[3].axisY()->setRange(0, 0.6);
-    charts[3].axisX()->hide();
-    charts[3].axisY()->hide();
+    charts[3].axes(Qt::Horizontal).back()->setRange(-0.2, 0.2);
+    charts[3].axes(Qt::Vertical).back()->setRange(0, 0.6);
+    charts[3].axes(Qt::Horizontal).back()->hide();
+    charts[3].axes(Qt::Vertical).back()->hide();
 
     refreshCharts();
 }
