@@ -22,3 +22,11 @@ Continuum and soft robotics problems can have a steep learning curve. The mechan
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+## Contributing
+
+Feel free to submit pull requests and use the issue tracker to start a discussion about any bugs you encounter. Please provide a description of your compiler and operating system for any software related bugs.
+
+## Acknowledgements
+
+Thanks to the continuum robotics research community for creating many exciting robot designs and publishing great papers showing how one can use mathematical modeling to gain deeper understanding of physical systems.
