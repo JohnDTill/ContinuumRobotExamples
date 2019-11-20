@@ -1,0 +1,2 @@
+This MATLAB script demonstrates time integration using the implicit midpoint method, as described in Chapter 3.1.4 of the dissertation "On the Statics, Dynamics, and Stability of Parallel Continuum Robots: Model Formulations and Efficient Computational Schemes" (included in the misc subfolder).
+The implicit midpoint method eliminates numerical damping while retaining numerical stability.
