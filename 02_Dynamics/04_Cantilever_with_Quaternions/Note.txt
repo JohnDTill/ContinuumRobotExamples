@@ -1,0 +1,3 @@
+This script demonstrates the cantilever simulation with spatial integration using non-unit quaternions. This change addresses the concern that numerically integrating rotation matrices results in some drift from SO3, the manifold of valid rotations.
+The script is from our paper "Real-Time Dynamics of Soft and Continuum Robots based on Cosserat-Rod Models" (preprint: https://www.researchgate.net/publication/331791358_Real-Time_Dynamics_of_Soft_and_Continuum_Robots_based_on_Cosserat-Rod_Models).
+The advantages of non-unit quaternions are more thoroughly explored in Caleb's paper "Integrating Rotations using Non-Unit Quaternions" (preprint: https://www.researchgate.net/publication/325918064_Integrating_Rotations_using_Non-Unit_Quaternions).
