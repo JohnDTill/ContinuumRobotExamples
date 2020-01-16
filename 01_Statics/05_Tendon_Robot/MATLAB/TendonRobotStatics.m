@@ -81,7 +81,7 @@ function TendonRobotStatics
             
             a = a + a_i;
             b = b + cross(r{i}, a_i);
-            A = A + Kse;
+            A = A + A_i;
             G = G + G_i;
             H = H + hat(r{i})*G_i;
         end
