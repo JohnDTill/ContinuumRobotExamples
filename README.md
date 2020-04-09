@@ -2,7 +2,7 @@
 
 Continuum robots have elastic links which are capable of large-scale continuous deformations. This repo has example scripts to simulate continuum robots of various design paradigms. Each example is accompanied by a short write-up in PDF format.
 
-![alt text](https://github.com/JohnDTill/ContinuumRobotExamples/raw/master/01_Statics/05_Tendon_Robot/LaTeX/fig/TendonRobotRender.jpg "Tendon-Driven Robot")
+![Blender rendering of a tendon-actuated robot](https://github.com/JohnDTill/ContinuumRobotExamples/raw/master/01_Statics/05_Tendon_Robot/LaTeX/fig/TendonRobotRender.jpg "Tendon-Driven Robot")
 
 ## Motivation
 
@@ -11,6 +11,10 @@ Continuum robots have elastic links which are capable of large-scale continuous 
 * Disseminate published academic results
 
 Continuum and soft robotics problems can have a steep learning curve. The mechanics of robot motions are described by differential equations. Controlling a robot may depend on writing a simulation loop to numerically solve for robot behavior at interactive rates. Although there is fundamental complexity which is difficult to generalize in software, this repo aims to provide an easier path with examples as learning aids.
+
+The examples begin simple and build to present progressively more complicated models. Code is C++ with some examples also implemented in MATLAB. Qt is recommended to use with the C++ examples as the project organization files are in ".pro" Qt format, Qt's plotting capabilities are used to visualize models, and the event system is used to demonstrate interactive simulation.
+
+![Interactive control of a parallel continuum robot](https://github.com/JohnDTill/ContinuumRobotExamples/raw/master/CSG_Control.gif "Interactive control of a parallel continuum robot")
 
 ## Prerequisites
 
