@@ -33,4 +33,5 @@ Feel free to submit pull requests and use the issue tracker to start a discussio
 
 ## Acknowledgements
 
-Thanks to the continuum robotics research community for creating many exciting robot designs and publishing great papers showing how one can use mathematical modeling to gain deeper understanding of physical systems.
+Thanks to my Ph.D. advisor Caleb Rucker for his excellent work leading the [REACH lab](https://sites.google.com/site/danielcrucker/), and
+thanks to the continuum robotics research community for creating many exciting robot designs and publishing great papers showing how one can use mathematical modeling to gain deeper understanding of physical systems.
