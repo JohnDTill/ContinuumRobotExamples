@@ -446,4 +446,41 @@ The file ``Tendon\_Robot\_Animation.blend'' contains a script to generate an ani
 	\label{fig:Render}
 \end{figure}
 
+\newpage
+
+\section*{Friction}
+
+In response to a request, some additional examples are added to show two possible ways of modeling friction. The first example has a simple friction model as presented in our IJRR paper. Embarrassingly, there was a typo in the code used to generate Fig. 15 of that paper, where the friction force was rotated to the body frame despite being calculated \emph{in the body frame}. The end result is similar but it should not be alarming that the tip trajectories differ.
+
+That model has the advantage of being simple, but the tendon tension really should be effected by the friction. A more thorough model allows the tension $\tau_i$ to vary as a state variable with respect to arc length, and is proportional to normal force rather than curvature:
+\begin{align*}
+\tau_{s,i} = -\beta \text{sign}(v_{i}) \| \boldsymbol{f}^n_i \| s_{i,s}
+\end{align*}
+where $\beta$ is the friction coefficient, $\boldsymbol{f}_{n,i}$ is the normal force acting on the tendon, and $s_{i,s}$ is the change in tendon arclength with respect to the backbone arclength because
+\begin{align*}
+\frac{\partial \tau_i}{\partial s} = \frac{\partial \tau_i}{\partial s_i} \frac{\partial s_i}{ \partial s}.
+\end{align*}
+The normal force is of course given by subtracting the component in the tendon direction:
+\begin{align*}
+\| \boldsymbol{f}^n_i \| = \boldsymbol{f}^b_i - \boldsymbol{f}^b_i \frac{\boldsymbol{p}^b_{s,i}}{\| \boldsymbol{p}^b_{s,i} \|}.
+\end{align*}
+For continuity, the sign function is approximated by a saturation function in the code example. Now we consider (11) in Caleb and Bob's paper, expressed in the body frame:
+\begin{align*}
+\boldsymbol{n}^b_i = \tau_i \frac{\boldsymbol{p}^b_{s,i}}{\| \boldsymbol{p}^b_{s,i} \|}.
+\end{align*}
+Differentiating without the assumption of constant $\tau_i$ yields:
+\begin{align*}
+\boldsymbol{f}^b_i = \tau_{i,s} \frac{\boldsymbol{p}^b_{s,i}}{\| \boldsymbol{p}^b_{s,i} \|} + \tau_{i} \frac{\partial}{\partial s} \frac{\boldsymbol{p}^b_{s,i}}{\| \boldsymbol{p}^b_{s,i} \|}.
+\end{align*}
+where\footnote{https://math.stackexchange.com/questions/2135038/derivative-of-a-vector-divided-by-its-norm-w-r-t-a-parameter}
+\begin{align*}
+\frac{\partial}{\partial s} \frac{\boldsymbol{p}^b_{s,i}}{\| \boldsymbol{p}^b_{s,i} \|} = \left( \frac{\boldsymbol{I} - \frac{\boldsymbol{p}^b_{s,i}}{\| \boldsymbol{p}^b_{s,i} \|} \frac{\boldsymbol{p}^b_{s,i}}{\| \boldsymbol{p}^{b\top}_{s,i} \|}}{\| \boldsymbol{p}^b_{s,i} \|} \right) \boldsymbol{p}^b_{ss,i}
+\end{align*}
+Fortunately the normal force is not dependent on $\tau_{i,s}$ because that component only acts along the tendon. We can calculate the normal force magnitude by:
+\begin{align*}
+\boldsymbol{f}^{b*}_i :=& \tau_{i} \frac{\widehat{\boldsymbol{p}^{b}_{s,i}}^{2}}{\| \boldsymbol{p}^{b}_{s,i} \|^{3}} \boldsymbol{p}^b_{ss,i} \\
+\| \boldsymbol{f}^n_i \| =& \boldsymbol{f}^{b*}_i - \boldsymbol{f}^{b*}_i \frac{\boldsymbol{p}^{b*}_{s,i}}{\| \boldsymbol{p}^{b*}_{s,i} \|}
+\end{align*}
+Unfortunately there is a two-way dependence between the strains $\boldsymbol{v}_s$ and $\boldsymbol{u}_s$ and the tendon forces $\boldsymbol{f}^n_i$ and $\boldsymbol{l}^n_i$. Without friction the DAEs were elegantly manipulated to ODEs in Caleb and Bob's paper, but in the example code we content ourselves to guess $\boldsymbol{v}_s$ and $\boldsymbol{u}_s$ to solve numerically.
+
 \end{document}
