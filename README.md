@@ -19,9 +19,9 @@ The examples begin simple and build to present progressively more complicated mo
 ## Prerequisites
 
 * Qt (https://www.qt.io/download)
-* Blender (https://www.blender.org/)
 * PDF Viewer
 * MATLAB (optional)
+* Blender 2.7.9 (https://download.blender.org/release/Blender2.79/) (optional for creating procedural renderings. Note this is an **old version** due to breaking changes in scripting syntax.)
 
 ## License
 
