@@ -26,6 +26,7 @@ inline void euler(
         ODE(y_s, Map<VectorXd>(&Z(0,i),derivsize), Map<VectorXd>(&Y(0,i),statesize));
         Y.col(i+1) = Y.col(i) + ds*y_s;
     }
+    ODE(y_s, Map<VectorXd>(&Z(0,N-1),derivsize), Map<VectorXd>(&Y(0,N-1),statesize));
     #undef y_s
 }
 
@@ -53,6 +54,7 @@ inline void TimeBdfAlpha_SpaceEuler(
         PDE(y_s, Map<VectorXd>(&Z(0,i),derivsize), Map<VectorXd>(&Y(0,i),statesize), Map<VectorXd>(&Z_h(0,i),derivsize));
         Y.col(i+1) = Y.col(i) + ds*y_s;
     }
+    PDE(y_s, Map<VectorXd>(&Z(0,N-1),derivsize), Map<VectorXd>(&Y(0,N-1),statesize), Map<VectorXd>(&Z_h(0,N-1),derivsize));
     #undef y_s
 }
 
