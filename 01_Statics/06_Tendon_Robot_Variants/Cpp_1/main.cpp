@@ -78,13 +78,13 @@ VectorXd shootingFunction(VectorXd guess){
     Y = ode4<kirchhoffTendonRobotOde>(y0, L);
 
     //Find the internal forces in the backbone prior to the final plate
-    Vector3d nb = Y.block<3,1>(12,Y.cols()-1);
+    Vector3d nbL = Y.block<3,1>(12,Y.cols()-1);
     Vector3d uL = Y.block<3,1>(15,Y.cols()-1);
-    Vector3d mb = Kbt*uL;
+    Vector3d mbL = Kbt*uL;
 
     //Find the equilibrium error at the tip, considering tendon forces
-    Vector3d force_error = -nb;
-    Vector3d moment_error = -mb;
+    Vector3d force_error = -nbL;
+    Vector3d moment_error = -mbL;
     for(int i = 0; i < num_tendons; i++){
         Vector3d pb_si = uL.cross(r[i]) + Vector3d::UnitZ();
         Vector3d Fb_i = -tau(i)*pb_si.normalized();

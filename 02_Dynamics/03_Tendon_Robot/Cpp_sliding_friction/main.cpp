@@ -276,12 +276,12 @@ VectorXd obj(VectorXd guess){
     Vector3d vL_t = is_dynamic ? (c0*vL + Z_h.block<3,1>(0,N-1)).eval() : Vector3d::Zero();
     Vector3d uL_t = is_dynamic ? (c0*uL + Z_h.block<3,1>(3,N-1)).eval() : Vector3d::Zero();
 
-    Vector3d nb = Kse*(vL - Vector3d::UnitZ()) + Bse*vL_t;
-    Vector3d mb = Kbt*uL + Bbt*uL_t;
+    Vector3d nbL = Kse*(vL - Vector3d::UnitZ()) + Bse*vL_t;
+    Vector3d mbL = Kbt*uL + Bbt*uL_t;
 
     //Find the equilibrium error at the tip, considering tendon forces
-    Vector3d force_error = -nb;
-    Vector3d moment_error = -mb;
+    Vector3d force_error = -nbL;
+    Vector3d moment_error = -mbL;
     for(int i = 0; i < num_tendons; i++){
         Vector3d pb_si = uL.cross(r[i]) + vL;
         Vector3d Fb_i = -tauL(i)*pb_si.normalized();

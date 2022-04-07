@@ -113,8 +113,8 @@ const Matrix3d R0 = Matrix3d::Identity();
 
 static MatrixXd Y; //Declare Y global to save results
 VectorXd shootingFunction(VectorXd guess){
-    Vector3d n0 = guess.segment<3>(0);
-    Vector3d v0 = Kse.inverse()*n0 + Vector3d::UnitZ();
+    Vector3d nb0 = guess.segment<3>(0);
+    Vector3d v0 = Kse.inverse()*nb0 + Vector3d::UnitZ();
     Vector3d u0 = guess.segment<3>(3);
 
     VectorXd y0(18);
@@ -127,12 +127,12 @@ VectorXd shootingFunction(VectorXd guess){
     Vector3d vL = Y.block<3,1>(12,Y.cols()-1);
     Vector3d uL = Y.block<3,1>(15,Y.cols()-1);
 
-    Vector3d nb = Kse*(vL - Vector3d::UnitZ());
-    Vector3d mb = Kbt*uL;
+    Vector3d nbL = Kse*(vL - Vector3d::UnitZ());
+    Vector3d mbL = Kbt*uL;
 
     //Find the equilibrium error at the tip, considering tendon forces
-    Vector3d force_error = -nb;
-    Vector3d moment_error = -mb;
+    Vector3d force_error = -nbL;
+    Vector3d moment_error = -mbL;
     Vector3d r[num_tendons], r_s[num_tendons], r_ss[num_tendons];
     getRouting(L, r, r_s, r_ss);
     for(int i = 0; i < num_tendons; i++){
@@ -149,7 +149,7 @@ VectorXd shootingFunction(VectorXd guess){
 }
 
 int main(int, char**){
-    Vector6d init_guess = Vector6d::Zero(); //nb and u
+    Vector6d init_guess = Vector6d::Zero(); //nb0 and u
 
     //Solve with shooting method
     VectorXd wrench_soln = solveLevenbergMarquardt<shootingFunction>(init_guess, 1e-12, 500, 1e-2, 0.5, 1e-7, 1e-9);

@@ -105,8 +105,8 @@ function TendonRobotStatics
     end
 
     function distal_error = shootingFunction(guess)
-        n0 = guess(1:3);
-        v0 = Kse\n0 + [0;0;1];
+        nb0 = guess(1:3);
+        v0 = Kse\nb0 + [0;0;1];
         u0 = guess(4:6);
         
         y0 = [p0; reshape(R0,9,1); v0; u0];
@@ -117,12 +117,12 @@ function TendonRobotStatics
         vL = Y(end,13:15).';
         uL = Y(end,16:18).';
         
-        nb = Kse*(vL - [0;0;1]);
-        mb = Kbt*uL;
+        nbL = Kse*(vL - [0;0;1]);
+        mbL = Kbt*uL;
         
         %Find the equilibrium error at the tip, considering tendon forces
-        force_error = -nb;
-        moment_error = -mb;
+        force_error = -nbL;
+        moment_error = -mbL;
         for i = 1 : num_tendons
             pb_si = cross(uL,r{i}) + vL;
             Fb_i = -tau(i)*pb_si/norm(pb_si);
