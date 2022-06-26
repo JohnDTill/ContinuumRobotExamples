@@ -120,10 +120,10 @@ function TendonRobotDisplacement
         v0 = Kse\n0 + [0;0;1];
         u0 = guess(4:6);
         
-        tau=max(guess(7:7+num_tendons-1),0); %拉力,和0比取最大
+        tau=max(guess(7:7+num_tendons-1),0); %Pull force, which is the largest when compared with 0
         slack=-min(guess(7:7+num_tendons-1),0);
 
-        y0 = [p0; reshape(R0,9,1); v0; u0; q]; %初始y0
+        y0 = [p0; reshape(R0,9,1); v0; u0; q]; %initial y0
         
         [~,Y] = ode45(@cosseratTendonRobotOde, linspace(0,L), y0);
         

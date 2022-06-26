@@ -1,7 +1,7 @@
 function [X,Y,Z] = myCylinder(u1,u2,r)
 %通过空间中两点和半径得到圆柱底和顶的圆点
 n=u2-u1;
-theta=(0:2*pi/100:2*pi)'; %theta角从0到2*pi
+theta=(0:2*pi/100:2*pi)'; %theta 0 to 2*pi
 a=cross(n,[1 0 0]);       %n与i叉乘，求取a向量
 if ~any(a) %如果a为零向量，将n与j叉乘   %any检测矩阵中是否有非零元素，如果有，则返回1，否则，返回0
     a=cross(n,[0 1 0]);
