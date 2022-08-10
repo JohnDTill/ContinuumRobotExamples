@@ -116,7 +116,7 @@ end
         A = zeros(3,3);
         G = zeros(3,3);
         H = zeros(3,3);
-        pib_s_norm=y(24:24+num_tendons-1);;
+        pib_s_norm=y(24:24+num_tendons-1);
 
         for i = 1 : num_tendons
             pb_si = cross(u,r{i}) + v;
@@ -224,27 +224,27 @@ end
         tau=max(guess(7:7+num_tendons-1),0); %Pull force, which is the largest when compared with 0
         slack=-min(guess(7:7+num_tendons-1),0);
 
-        %pi_b_norm=ones(num_tendons,1)*base_to_motor;
-        pi_b_norm=-Z_t(t)*ones(num_tendons,1);
-        %z=[v;u;q;w;vs_and_us];
-        y0=[p0; reshape(R0,9,1); v0; u0; q0; w0; pi_b_norm];
-       
-        [~,Yout] = ode45(@staticODE, linspace(0,L,200), y0);
-        Y=Yout';
-        for j = 1 : 100-1
-          Z(1:6,j)=Y(13:18,j);
-          Z(13:18,j)=Y(13:18,j);
-        end
+        %pib_s_norm=ones(num_tendons,1)*base_to_motor;
+        pib_s_norm=-Z_t(t)*ones(num_tendons,1);
+        
+        %ODE45
+%         y0=[p0; reshape(R0,9,1); v0; u0; q0; w0; pi_b_norm];
+%         [~,Yout] = ode45(@staticODE, linspace(0,L,200), y0);
+%         Y=Yout';
+%         for j = 1 : N-1
+%           Z(1:6,j)=Y(13:18,j);
+%           Z(13:18,j)=Y(13:18,j);
+%         end
 
         %Euler's method
-        %         Y(:,1) = [Y(1:12,1); v0; u0; q0; w0; pi_b_norm]; %initial y0
-        %
-        %         for j = 1 : N-1
-        %             [y_s] = staticODE(Y(:,j));
-        %             Y(:,j+1)=Y(:,j)+ds*y_s;
-        %             Z(1:6,j+1)=Y(13:18,j);
-        %             Z(13:18,j+1)=Y(13:18,j);
-        %         end
+        Y(:,1) = [Y(1:12,1); v0; u0; q0; w0; pib_s_norm]; %initial y0
+
+        for j = 1 : N-1
+            [y_s] = staticODE(0,Y(:,j));
+            Y(:,j+1)=Y(:,j)+ds*y_s;
+            Z(1:6,j+1)=Y(13:18,j);
+            Z(13:18,j+1)=Y(13:18,j);
+        end
 
         %Find the internal forces in the backbone prior to the final plate
         vL = Y(13:15,end);
@@ -286,21 +286,18 @@ end
         Y(:,1) = [Y(1:12,1); v0; u0; q0; w0; pi_b_norm]; %initial y0
         
         for j = 1 : N-1
+            % Euler's method
             [y_s,Z(:,j)] = dynamicODE(Y(:,j),Z_h(:,j));
             Y(:,j+1)=Y(:,j)+ds*y_s;
-
+            %OED45
 %             Yj = Y(:,j);
 %             [k1,Z(:,j)]=dynamicODE(Yj,Z_h(:,j));
 %             [k2,~]=dynamicODE(Yj+k1*ds/2,Zh_int(:,j));
 %             [k3,~]=dynamicODE(Yj+k2*ds/2,Zh_int(:,j));
 %             [k4,~]=dynamicODE(Yj+k3*ds,Z_h(:,j+1));
 %             Y(:,j+1) = Yj + ds*(k1 + 2*(k2+k3) + k4)/6;
-
         end
-
-        
         %[~,Y] = ode45(@(s,y) odefcn(t,y,A,B), tspan, y0);
-
         %Find the internal forces in the backbone prior to the final plate
         vL = Y(13:15,end);
         uL = Y(16:18,end);
@@ -320,7 +317,6 @@ end
             force_error = force_error + Fb_i;
             moment_error = moment_error + cross(r{index}, Fb_i);
         end
-
         %Find the length violation error
         integrated_lengths=Y(25:25+num_tendons-1,end);
         %l_star=L+base_to_motor+Z(t);
