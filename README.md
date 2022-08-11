@@ -36,6 +36,6 @@ Feel free to submit pull requests and use the issue tracker to start a discussio
 Thanks to my Ph.D. advisor Caleb Rucker for his excellent work leading the [REACH lab](https://sites.google.com/site/danielcrucker/), and
 thanks to the continuum robotics research community for creating many exciting robot designs and publishing great papers showing how one can use mathematical modeling to gain deeper understanding of physical systems.
 
-Thanks to Lisong Xu for contributing a MATLAB example of a tendon robot with displacement control, including a nice 3D visualisation.
+Thanks to Lisong Xu for contributing both static and dynamic MATLAB examples of a tendon robot with displacement control, including nice 3D visualisations.
 
 ![Interactive control of a parallel continuum robot](./01_Statics/06_Tendon_Robot_Variants/LaTeX/fig/TendonRobotMatlab.png)
