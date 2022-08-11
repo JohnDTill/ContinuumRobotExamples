@@ -87,7 +87,7 @@ global i_Tstep;
 global Z_h;
 guessPre=fsolve(@staticBVP, zeros(6+num_tendons,1)); %Solve static BVP w/ shooting method
 robotShow();
-for tStep = 2 : STEPS
+for tStep = 1 : STEPS
     %Set history terms
     Z_h = c1*Z+c2*Z_prev;
     Y_prev = Y;
@@ -95,11 +95,10 @@ for tStep = 2 : STEPS
     %Midpoints are linearly interpolated for RK4
     Zh_int = 0.5*(Z_h(:,1:end-1) + Z_h(:,2:end));
 
-    %fsolve(@dynamicBVP, [n0; m0;zeros(num_tendons,1)]); %Solve semi-discretized PDE w/ shooting
-    guessPre=fsolve(@dynamicBVP, guessPre);
-    t=t+dt;
-    robotShow();
-    disp(t);
+    guessPre=fsolve(@dynamicBVP, guessPre);%Solve semi-discretized PDE w/ shooting    
+    robotShow(); %3dplot
+    disp(t);     %print current time
+    t=t+dt;  %update time 
 end
 
 %% static ODE function
@@ -225,25 +224,25 @@ end
         slack=-min(guess(7:7+num_tendons-1),0);
 
         %pib_s_norm=ones(num_tendons,1)*base_to_motor;
-        pib_s_norm=-Z_t(t)*ones(num_tendons,1);
+        pi_b_norm=-Z_t(t)*ones(num_tendons,1);
         
+        s=linspace(0,L,N);
         %ODE45
-%         y0=[p0; reshape(R0,9,1); v0; u0; q0; w0; pi_b_norm];
-%         [~,Yout] = ode45(@staticODE, linspace(0,L,200), y0);
-%         Y=Yout';
-%         for j = 1 : N-1
-%           Z(1:6,j)=Y(13:18,j);
-%           Z(13:18,j)=Y(13:18,j);
-%         end
+%          y0=[p0; reshape(R0,9,1); v0; u0; q0; w0; pi_b_norm];
+%          Sol=ode45(@staticODE, s, y0);
+%          [Y,y_s] =deval(Sol,s); %obtain Y and derivatives y_s
+%          for j = 1 : N-1
+%            Z(1:6,j)=Y(13:18,j);
+%            Z(13:18,j)=y_s(13:18,j);
+%          end
 
         %Euler's method
-        Y(:,1) = [Y(1:12,1); v0; u0; q0; w0; pib_s_norm]; %initial y0
-
+        Y(:,1) = [Y(1:12,1); v0; u0; q0; w0; pi_b_norm]; %initial y0
         for j = 1 : N-1
-            [y_s] = staticODE(0,Y(:,j));
+            [y_s] = staticODE(s(j),Y(:,j));
             Y(:,j+1)=Y(:,j)+ds*y_s;
-            Z(1:6,j+1)=Y(13:18,j);
-            Z(13:18,j+1)=Y(13:18,j);
+            Z(1:6,j)=Y(13:18,j);
+            Z(13:18,j)=y_s(13:18);
         end
 
         %Find the internal forces in the backbone prior to the final plate
@@ -297,7 +296,7 @@ end
 %             [k4,~]=dynamicODE(Yj+k3*ds,Z_h(:,j+1));
 %             Y(:,j+1) = Yj + ds*(k1 + 2*(k2+k3) + k4)/6;
         end
-        %[~,Y] = ode45(@(s,y) odefcn(t,y,A,B), tspan, y0);
+        
         %Find the internal forces in the backbone prior to the final plate
         vL = Y(13:15,end);
         uL = Y(16:18,end);
